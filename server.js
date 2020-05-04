@@ -6,7 +6,7 @@ const uuid = require('uuid');
 const DB_PATH = 'chattext.json';
 
 let chatMessages = [];
-let chatClient = {};
+let chatClient = {}; //single message from an user
 
 app.use(express.json());
 
@@ -31,8 +31,25 @@ function saveMessages() {
     })
 }
 
+function showAllMessages() {
+    return new Promise((resolve, reject) => {
+        fs.readFile(DB_PATH, (error, data) => {
+            if (error) {
+                reject(error);
+            } else {
+                console.log('Is it working?');
+                resolve(data);
+            }
+        })
+    })
+}
+
 io.on('connection', (socket) => {
     console.log('an user is connected');
+
+    socket.emit('messages', data => {
+        showAllMessages();
+    });
 
     socket.on('new_message', (data) => {
         console.log('Got a new message', data);
@@ -44,7 +61,7 @@ io.on('connection', (socket) => {
         }
         chatMessages.push(chatClient);
         saveMessages();
-       
+
         socket.broadcast.emit('new_message', chatClient);
 
         console.log(chatMessages);
