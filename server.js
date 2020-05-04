@@ -5,7 +5,9 @@ const app = express();
 const uuid = require('uuid');
 const DB_PATH = 'chattext.json';
 
-let chatMessages = [];
+const chatArray = JSON.parse(fs.readFileSync(DB_PATH)); //previous: shownMessages or sentMsgs
+
+//let chatMessages = [];
 let chatClient = {}; //single message from an user
 
 app.use(express.json());
@@ -13,15 +15,9 @@ app.use(express.json());
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, { origins: '*:*' });
 
-/*const router = express.Router();
-
-router.get('/', (req, res) => {
-    res.send({response: "Server started and runing."}).status(200);
-});*/
-
-function saveMessages() {
+function saveMessage() {
     return new Promise((resolve, reject) => {
-        fs.writeFile(DB_PATH, JSON.stringify(chatMessages), error => {
+        fs.writeFile(DB_PATH, JSON.stringify(chatArray), error => {
             if (error) {
                 reject(error);
             } else {
@@ -37,18 +33,19 @@ function showAllMessages() {
             if (error) {
                 reject(error);
             } else {
-                console.log('Is it working?');
-                resolve(data);
+                renderChats();
             }
-        })
+        })  
     })
 }
+
 
 io.on('connection', (socket) => {
     console.log('an user is connected');
 
-    socket.emit('messages', data => {
-        showAllMessages();
+    socket.emit('messages', () => {
+        console.log('THIS CONSOLE LOG IS NOT WORKING AT ALL'); //not logging
+        showAllMessages(); //not working
     });
 
     socket.on('new_message', (data) => {
@@ -59,12 +56,11 @@ io.on('connection', (socket) => {
             content: data.content,
             id: uuid.v4(),
         }
-        chatMessages.push(chatClient);
-        saveMessages();
+        chatArray.push(chatClient) //working
+        console.log('CHAT CLIENT', chatClient); //working
+        saveMessage();
 
-        socket.broadcast.emit('new_message', chatClient);
-
-        console.log(chatMessages);
+        socket.emit('new_message', chatClient); //showing only own messages
 
     });
 
