@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
         console.log('CHAT CLIENT', chatClient); //working
         saveMessage();
 
-        socket.emit('new_message', chatClient); //showing only own messages
+        io.sockets.emit('new_message', chatClient); //working, later: socket.to('room').emit
 
     });
 
