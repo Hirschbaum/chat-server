@@ -3,11 +3,10 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const uuid = require('uuid');
+
 const DB_PATH = 'chattext.json';
+const chatArray = JSON.parse(fs.readFileSync(DB_PATH)); //previous: sentMsgs
 
-const chatArray = JSON.parse(fs.readFileSync(DB_PATH)); //previous: shownMessages or sentMsgs
-
-//let chatMessages = [];
 let chatClient = {}; //single message from an user
 
 app.use(express.json());
@@ -27,26 +26,11 @@ function saveMessage() {
     })
 }
 
-function showAllMessages() {
-    return new Promise((resolve, reject) => {
-        fs.readFile(DB_PATH, (error, data) => {
-            if (error) {
-                reject(error);
-            } else {
-                renderChats();
-            }
-        })  
-    })
-}
-
-
 io.on('connection', (socket) => {
     console.log('an user is connected');
 
-    socket.emit('messages', () => {
-        console.log('THIS CONSOLE LOG IS NOT WORKING AT ALL'); //not logging
-        showAllMessages(); //not working
-    });
+    //socket.on('messages', () => {socket.emit('messages', chatArray)}); //not working
+    socket.emit('messages', chatArray); //not working
 
     socket.on('new_message', (data) => {
         console.log('Got a new message', data);
@@ -61,7 +45,6 @@ io.on('connection', (socket) => {
         saveMessage();
 
         io.sockets.emit('new_message', chatClient); //working, later: socket.to('room').emit
-
     });
 
     socket.on('disconnect', () => {
