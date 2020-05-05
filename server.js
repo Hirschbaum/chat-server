@@ -35,16 +35,19 @@ io.on('connection', (socket) => {
     socket.on('new_message', (data) => {
         console.log('Got a new message', data);
 
-        chatClient = {
+        data.id = uuid.v4(); //adding id to the data objekt 
+        chatArray.push(data); 
+        saveMessage(); 
+        /*chatClient = {
             username: data.username,
             content: data.content,
             id: uuid.v4(),
         }
         chatArray.push(chatClient) //working
         console.log('CHAT CLIENT', chatClient); //working
-        saveMessage();
+        saveMessage();*/
 
-        io.sockets.emit('new_message', chatClient); //working, later: socket.to('room').emit
+        io.sockets.emit('new_message', data); //working, later: socket.to('room').emit
     });
 
     socket.on('disconnect', () => {
