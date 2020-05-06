@@ -25,23 +25,55 @@ function saveMessage() {
 }
 
 //-----------------HTTP METHODS---------------
+app.use((req, res, next) => {
+    let start = Date.now();
+    res.once('finish', () => {
+        let end = Date.now();
+        let time = end - start;
+        console.log(req.method, req.path, res.statusCode, time + ' ms');
+    });
+    next();
+});
 
-//to find a specific channel
+//-----resource one: channels --------------------------------------------------
+//-------------------------------------------------------------------------------
+
 app.get('/channel/:id', (req, res) => {
     //find the room according to id in the json file...
 })
 
-//to to create a new channel
+//to to create a new channel and save it in the json file
+// curl -XPOST localhost:8090/ -H 'Content-Type: application/json' -d '{"name": "abcde"}' -v         OUTPUT: status 400
+
 app.post('/', (req, res) => {
     
     let name = req.body.channelName;
-    //if no channel, 400
-    //logic to create a new channel: id, name, channelMessages
-    //push, save the new channel in the json file
-})
+    if (!name) {
+        res.status(400).end();
+    } else {
+        let newChannel = {
+            "channelName": name,
+            "id": uuid.v4(),
+            "channelMessages": [],
+        }
 
-app.delete('/delete:id', (req, res) => {
-    //find all the data, execept the specific id in the array
+        console.log(newChannel.name, newChannel.id);
+
+        DB_PATH.push(newChannel);
+        fs.writeFile('./chattext.json', JSON.stringify(DB_PATH), (error, data) => {
+            if (error) {
+                res.status(500).end(); 
+            } else {
+                //console.log(data); nothing
+                res.status(201);
+                res.send({data: newChannel});
+            }
+        })
+    }
+});
+
+app.delete('/:id', (req, res) => {
+    //find all the data, except the specific id in the array
     //save these, but not the specific id
 })
 
