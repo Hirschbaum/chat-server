@@ -57,14 +57,14 @@ app.post('/', (req, res) => {
             "channelMessages": [],
         }
 
-        console.log(newChannel.name, newChannel.id);
+        console.log(newChannel.name, newChannel.id); //nothing
 
-        DB_PATH.push(newChannel);
-        fs.writeFile('./chattext.json', JSON.stringify(DB_PATH), (error, data) => {
+        chatArray.push(newChannel);
+        fs.writeFile(DB_PATH, JSON.stringify(chatArray), (error, data) => {
             if (error) {
                 res.status(500).end(); 
             } else {
-                //console.log(data); nothing
+                //console.log(data); //nothing
                 res.status(201);
                 res.send({data: newChannel});
             }
