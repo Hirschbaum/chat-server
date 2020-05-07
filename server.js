@@ -43,7 +43,7 @@ app.get('/channel/:id', (req, res) => {
 })
 
 //to to create a new channel and save it in the json file
-// curl -XPOST localhost:8090/ -H 'Content-Type: application/json' -d '{"name": "abcde"}' -v         OUTPUT: status 400
+// curl -XPOST localhost:8090/ -H 'Content-Type: application/json' -d '{"name": "abcde"}' -v         
 
 app.post('/', (req, res) => {
     
@@ -57,16 +57,16 @@ app.post('/', (req, res) => {
             "channelMessages": [],
         }
 
-        console.log(newChannel.name, newChannel.id); //nothing
+        console.log(newChannel.channelName, newChannel.id); //working
 
         chatArray.push(newChannel);
         fs.writeFile(DB_PATH, JSON.stringify(chatArray), (error, data) => {
             if (error) {
                 res.status(500).end(); 
             } else {
-                //console.log(data); //nothing
+                console.log('DATA with newChannel', data); //undefined
                 res.status(201);
-                res.send({data: newChannel});
+                res.send(data = {newChannel});
             }
         })
     }
