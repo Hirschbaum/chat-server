@@ -24,7 +24,7 @@ function saveMessage() {
     })
 }
 
-//-----------------HTTP METHODS---------------
+//-----------------HTTP METHODS-----------------------------------------------
 app.use((req, res, next) => {
     let start = Date.now();
     res.once('finish', () => {
@@ -35,18 +35,28 @@ app.use((req, res, next) => {
     next();
 });
 
-//-----resource one: channels --------------------------------------------------
+//----- channels ----((chatrooms))----------------------------------------------
 //-------------------------------------------------------------------------------
 
-app.get('/channel/:id', (req, res) => {
-    //find the room according to id in the json file...
+app.get('/:id', (req, res) => {
+    //find the channel according to channels id in the json file...
+    let choosenChannel = DB_PATH.find((channel) => channel.id === (req.params.id)) 
+    if (!choosenChannel) {
+        res.status(400).end();
+        return;
+    }
+    res.status(200);
+    res.json(choosenChannel);
+
+    //and display the messages from that Channel: in the socket part
+
 })
 
 //to to create a new channel and save it in the json file
 // curl -XPOST localhost:8090/ -H 'Content-Type: application/json' -d '{"name": "abcde"}' -v         
 
 app.post('/', (req, res) => {
-    
+
     let name = req.body.channelName;
     if (!name) {
         res.status(400).end();
@@ -62,12 +72,12 @@ app.post('/', (req, res) => {
         chatArray.push(newChannel);
         fs.writeFile(DB_PATH, JSON.stringify(chatArray), (error, data) => {
             if (error) {
-                res.status(500).end(); 
-            } else {
-                console.log('DATA with newChannel', data); //undefined
-                res.status(201);
-                res.send(data = {newChannel});
+                res.status(500).end();
             }
+            console.log('DATA with newChannel', data); //UNDEFINED....
+            res.status(201); //got it to devTools console
+            res.send(data = { newChannel });
+
         })
     }
 });
@@ -90,7 +100,7 @@ io.on('connection', (socket) => {
         data.id = uuid.v4(); //adding id to the data objekt 
         chatArray.push(data);
         saveMessage();
-        /*chatClient = {username: data.username, content: data.content, id: uuid.v4(),}; chatArray.push(chatClient); saveMessage();*/
+        //mapp through the json file for channels, if channel.channelName === data.channel?, then what?! push and save the messages there
 
         io.sockets.emit('new_message', data); //working, later: socket.to('room').emit
     });
