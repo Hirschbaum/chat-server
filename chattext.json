@@ -1,1 +1,32 @@
-[{"username":"Viola","content":"hej","id":"946e4490-8d2d-4f34-9db4-c5aa629fb61b"},{"username":"Barna","content":"hali","id":"a311dcf3-ff94-4d3e-a7ae-a52675513ced"},{"username":"Viola","content":"mizu\n","id":"923cd0cd-ac0d-42be-9a46-9b144b49754a"},{"username":"Heni","content":"halihó","id":"f2c122a1-c36c-494d-8a09-7f032fc68d9c"},{"username":"Bela","content":"Hej","id":"dda1ed40-2466-4c8e-bdaa-4952e67531a3"},{"username":"Bela","content":"\nHali","id":"38a87c62-87b6-4ddf-a85d-45a570899827"},{"username":"Titusz","content":"Hi","id":"eec04e5f-c4a9-4cc2-9032-2158ae3db41b"},{"username":"Zödön","content":"\nho","id":"86cd3e63-b25b-451d-b0c8-31e8da5619dd"},{"username":"Valér","content":"Hali","id":"62ad6db0-09f5-4ea9-8ff2-2da4780b92e5"},{"username":"Valér","content":"","id":"2e3a4063-d44f-4a10-add6-52c02548036c"},{"channelName":"HEllo","id":"b4c66092-c5b2-4bed-b75c-c83a1584c35b","channelMessages":[]},{"channelName":"Mizu","id":"b819bbfa-c825-4caa-a026-516febb12980","channelMessages":[]},{"username":"Somone","content":"ho","id":"c7f2a19d-acec-4e66-b949-21007f43688d"},{"username":"Ibi","content":"hüpp","id":"0584ed7c-a8b0-4801-8fa1-c0a516f31e14"},{"channelName":"FTR","id":"7a6fc558-6a0e-4735-88f3-2811bd0dc105","channelMessages":[]},{"channelName":"Hali","id":"e103d9eb-c6ed-4462-9958-446045916446","channelMessages":[]},{"username":"Hilda","content":"szerintem","id":"cbd87cd3-99da-43db-8bea-4600f4b698bd"},{"username":"Titusz","content":"nope","id":"45004ebb-d754-480e-865c-36742ba387bc"},{"username":"Titusz","content":"E!","id":"9ac2bf06-f296-4ef0-93ba-88dc3caef746"},{"username":"Valér","content":"Ö!","id":"f443dd30-672d-46a8-b351-41e1a51ec8fd"},{"channelName":"Titusz","id":"701017a8-3b67-4132-81e6-c90c03f9ec92","channelMessages":[]},{"username":"Hilda","content":"hmmmmmm","id":"cf945398-d57b-430d-81d2-a59de316afeb"},{"channelName":"hoij","id":"485b09ce-00ce-45b1-9757-3530eedb8d16","channelMessages":[]},{"username":"Hilda","content":"Hejja","id":"ad4b9698-c1bc-4766-bb75-f0f88b38a0a1"},{"channelName":"Maci","id":"fac05a05-497c-4144-aa3d-6cade966b69f","channelMessages":[]},{"username":"Titusz","content":"Hello","id":"e4a1efee-1299-4721-bf71-0635c5c90c55"},{"channelName":"buu","id":"7ecb3ca4-793a-4b28-b34e-7a09aaec7945","channelMessages":[]},{"username":"Titusz","content":"hej","id":"03b0c7c9-9249-480c-8f19-d706320877f6"},{"channelName":"Sajt","id":"5806f066-ce68-4e80-9eb7-adedb6f854af","channelMessages":[]},{"channelName":"Alma","id":"d673c11d-1489-4075-970a-109eb8ee3eb3","channelMessages":[]},{"username":"Titusz","content":"ahoj","id":"2abb41b6-d7e2-4e3b-b734-82c4719e8455"},{"channelName":"yupp","id":"905d337d-92d6-4027-b6d6-57db581b944c","channelMessages":[]},{"username":"Hilda","content":"ciao","id":"56e5af63-9abd-4310-9cee-f54cc5fbc67e"},{"channelName":"bnm","id":"54af6c67-b40b-4517-81f4-b91db25aa9f9","channelMessages":[]},{"channelName":"brumi","id":"7e373bc0-8a0c-445a-98f0-49f080e40e26","channelMessages":[]}]
+[
+   
+    {
+        "channelName": "FTR",
+        "id": "7a6fc558-6a0e-4735-88f3-2811bd0dc105",
+        "channelMessages": [{"username":"Hilda","content":"ciao","id":"56e5af63-9abd-4310-9cee-f54cc5fbc67e"}]
+    }, 
+    
+    {
+        "channelName": "general",
+        "id": "485b09ce-00ce-45b1-9757-3530eedb8d16",
+        "channelMessages": [{"username":"Titusz","content":"hej","id":"cf945398-d57b-430d-81d2-a59de316afeb"}]
+    },
+   
+    {
+        "channelName": "mightly_interesting",
+        "id": "fac05a05-497c-4144-aa3d-6cade966b69f",
+        "channelMessages": [{"username":"Valér","content":"Ö!","id":"f443dd30-672d-46a8-b351-41e1a51ec8fd"}]
+    },
+    {
+        "channelName": "noway",
+        "id": "905d337d-92d6-4027-b6d6-57db581b944c",
+        "channelMessages": [{"username":"Zödön","content":"hi","id":"946e4490-8d2d-4f34-9db4-c5aa629fb61b"}]
+    },
+    
+    {
+        "channelName": "Brumi",
+        "id": "7e373bc0-8a0c-445a-98f0-49f080e40e26",
+        "channelMessages": [{"username":"Pofánka","content":"Brumi!","id":"a311dcf3-ff94-4d3e-a7ae-a52675513ced"}]
+    }
+ 
+]

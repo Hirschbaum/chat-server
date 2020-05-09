@@ -4,8 +4,8 @@ const express = require('express');
 const app = express();
 const uuid = require('uuid');
 
-const DB_PATH = 'chattext.json';
-const chatArray = JSON.parse(fs.readFileSync(DB_PATH)); //previous: sentMsgs
+let DB_PATH = require('./chattext.json');
+//const chatArray = JSON.parse(fs.readFileSync(DB_PATH)); //previous: sentMsgs
 
 app.use(express.json());
 
@@ -14,7 +14,7 @@ const io = require('socket.io')(http, { origins: '*:*' });
 
 function saveMessage() {
     return new Promise((resolve, reject) => {
-        fs.writeFile(DB_PATH, JSON.stringify(chatArray), error => {
+        fs.writeFile('./chattext.json', JSON.stringify(DB_PATH), error => {
             if (error) {
                 reject(error);
             } else {
@@ -37,6 +37,14 @@ app.use((req, res, next) => {
 
 //----- channels ----((chatrooms))----------------------------------------------
 //-------------------------------------------------------------------------------
+
+app.get('/', (req, res) => {
+    fs.readFile('chattext.json', (err, data) => {
+        if (err) {res.status(400).end()};
+        res.send({data});
+    })
+})
+
 
 app.get('/:id', (req, res) => {
     //find the channel according to channels id in the json file...
@@ -69,12 +77,12 @@ app.post('/', (req, res) => {
 
         console.log(newChannel.channelName, newChannel.id); //working
 
-        chatArray.push(newChannel);
-        fs.writeFile(DB_PATH, JSON.stringify(chatArray), (error, data) => {
+        DB_PATH.push(newChannel);
+        fs.writeFile('./chattext.json', JSON.stringify(DB_PATH), (error, data) => {
             if (error) {
                 res.status(500).end();
             }
-            console.log('DATA with newChannel', data); //UNDEFINED....
+            console.log('DATA with newChannel', newChannel); 
             res.status(201); //got it to devTools console
             res.send(data = { newChannel });
 
@@ -83,8 +91,8 @@ app.post('/', (req, res) => {
 });
 
 app.delete('/:id', (req, res) => {
-    //find all the data, except the specific id in the array
-    //save these, but not the specific id
+    //find all the data, except the specific channel id in the array
+    //save these data, but not the one with the specific id
 })
 
 //-----------------SOCKET----------------------
@@ -92,14 +100,22 @@ app.delete('/:id', (req, res) => {
 io.on('connection', (socket) => {
     console.log('an user is connected');
 
-    socket.emit('messages', chatArray); // working
+    socket.emit('messages', DB_PATH); // working, here was chatArray before
 
     socket.on('new_message', (data) => {
         console.log('Got a new message', data);
 
-        data.id = uuid.v4(); //adding id to the data objekt 
-        chatArray.push(data);
-        saveMessage();
+        data.id = uuid.v4(); //adding id to the data objekt (new_message)  
+
+
+        DB_PATH.map(channel => {
+            if(channel.channelName === data.channelName) {
+                channel.channelMessages.push(data); //data = the sent new message
+                saveMessage();
+            }
+        })
+        //chatArray.push(data);
+        //saveMessage();
         //mapp through the json file for channels, if channel.channelName === data.channel?, then what?! push and save the messages there
 
         io.sockets.emit('new_message', data); //working, later: socket.to('room').emit
