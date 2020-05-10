@@ -100,25 +100,28 @@ app.delete('/:id', (req, res) => {
 io.on('connection', (socket) => {
     console.log('an user is connected');
 
-    socket.emit('messages', DB_PATH); // working, here was chatArray before
+    socket.emit('messages', DB_PATH); // working, here was chatArray before, this sends all the messages to the app
 
-    socket.on('new_message', (data) => {
+    socket.on('new_message', (data) => { //-----TO FIX-----missing: id of the channel from the received data!!!!
         console.log('Got a new message', data);
 
-        data.id = uuid.v4(); //adding id to the data objekt (new_message)  
+        data.id = uuid.v4(); //adding id to the data objekt (via new_message socket)  
 
 
         DB_PATH.map(channel => {
-            if(channel.channelName === data.channelName) {
+            if(channel.id === data.id) { //---not working  data.id in the headers
                 channel.channelMessages.push(data); //data = the sent new message
                 saveMessage();
+                //earlier: socket.to(channel).emit('new_message', data); //not working
             }
         })
+        
+
         //chatArray.push(data);
         //saveMessage();
         //mapp through the json file for channels, if channel.channelName === data.channel?, then what?! push and save the messages there
 
-        io.sockets.emit('new_message', data); //working, later: socket.to('room').emit
+        io.sockets.emit('new_message', data);
     });
 
     socket.on('disconnect', () => {

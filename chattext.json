@@ -1,32 +1,57 @@
 [
-   
     {
         "channelName": "FTR",
         "id": "7a6fc558-6a0e-4735-88f3-2811bd0dc105",
-        "channelMessages": [{"username":"Hilda","content":"ciao","id":"56e5af63-9abd-4310-9cee-f54cc5fbc67e"}]
-    }, 
-    
+        "channelMessages": [
+            {
+                "username": "Hilda",
+                "content": "ciao",
+                "id": "56e5af63-9abd-4310-9cee-f54cc5fbc67e"
+            }
+        ]
+    },
     {
         "channelName": "general",
         "id": "485b09ce-00ce-45b1-9757-3530eedb8d16",
-        "channelMessages": [{"username":"Titusz","content":"hej","id":"cf945398-d57b-430d-81d2-a59de316afeb"}]
+        "channelMessages": [
+            {
+                "username": "Titusz",
+                "content": "hej",
+                "id": "cf945398-d57b-430d-81d2-a59de316afeb"
+            }
+        ]
     },
-   
     {
         "channelName": "mightly_interesting",
         "id": "fac05a05-497c-4144-aa3d-6cade966b69f",
-        "channelMessages": [{"username":"Valér","content":"Ö!","id":"f443dd30-672d-46a8-b351-41e1a51ec8fd"}]
+        "channelMessages": [
+            {
+                "username": "Valér",
+                "content": "Ö!",
+                "id": "f443dd30-672d-46a8-b351-41e1a51ec8fd"
+            }
+        ]
     },
     {
         "channelName": "noway",
         "id": "905d337d-92d6-4027-b6d6-57db581b944c",
-        "channelMessages": [{"username":"Zödön","content":"hi","id":"946e4490-8d2d-4f34-9db4-c5aa629fb61b"}]
+        "channelMessages": [
+            {
+                "username": "Zödön",
+                "content": "hi",
+                "id": "946e4490-8d2d-4f34-9db4-c5aa629fb61b"
+            }
+        ]
     },
-    
     {
         "channelName": "Brumi",
         "id": "7e373bc0-8a0c-445a-98f0-49f080e40e26",
-        "channelMessages": [{"username":"Pofánka","content":"Brumi!","id":"a311dcf3-ff94-4d3e-a7ae-a52675513ced"}]
+        "channelMessages": [
+            {
+                "username": "Pofánka",
+                "content": "Brumi!",
+                "id": "a311dcf3-ff94-4d3e-a7ae-a52675513ced"
+            }
+        ]
     }
- 
 ]
