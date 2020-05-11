@@ -1,4 +1,4 @@
-const PORT = 8090; // || process.env.PORT
+const PORT = 8090 || process.env.PORT;
 const fs = require('fs');
 const express = require('express');
 const app = express();
@@ -44,8 +44,7 @@ app.get('/', (req, res) => {
     })
 })
 
-app.get('/:id', (req, res) => {
-    //find the channel according to channels id in the json file...
+app.get('/:id', (req, res) => { //find the channel according to channels id in the json file...
     let choosenChannel = DB_PATH.find((channel) => channel.id === (req.params.id)) 
     if (!choosenChannel) {
         res.status(400).end();
@@ -53,27 +52,24 @@ app.get('/:id', (req, res) => {
     }
     res.status(200);
     res.json(choosenChannel);
-
-    //and display the messages from that Channel: in the socket part
-
 })
 
 //to to create a new channel and save it in the json file
 // curl -XPOST localhost:8090/ -H 'Content-Type: application/json' -d '{"name": "abcde"}' -v         
 
 app.post('/', (req, res) => {
-
     let name = req.body.channelName;
     if (!name) {
         res.status(400).end();
     } else {
+        
         let newChannel = {
             "channelName": name,
             "id": uuid.v4(),
             "channelMessages": [],
         }
 
-        console.log(newChannel.channelName, newChannel.id); //working
+        console.log(newChannel.channelName, newChannel.id); 
 
         DB_PATH.push(newChannel);
         fs.writeFile('./chattext.json', JSON.stringify(DB_PATH), (error, data) => {
@@ -81,10 +77,9 @@ app.post('/', (req, res) => {
                 res.status(500).end();
             }
             console.log('DATA with newChannel', newChannel); 
-            res.status(201); //got it to devTools console
+            res.status(201); 
             res.send(data = { newChannel });
-
-        })
+        })        
     }
 });
 
@@ -98,18 +93,17 @@ app.delete('/:id', (req, res) => {
 io.on('connection', (socket) => {
     console.log('an user is connected');
 
-    socket.emit('messages', DB_PATH); // working, here was chatArray before, this sends all the messages to the app
+    socket.emit('messages', DB_PATH); 
 
-    socket.on('new_message', (data) => { //-----TO FIX-----missing: id of the channel from the received data!!!!
+    socket.on('new_message', (data) => { 
         console.log('Got a new message', data);
 
-        data.msg_id = uuid.v4(); //adding id to the data objekt (via new_message socket)  
+        data.msg_id = uuid.v4(); 
 
         DB_PATH.map(channel => {
-            if(channel.id === data.id) { //---not working  data.id in the headers
-                channel.channelMessages.push(data); //data = the sent new message
+            if(channel.id === data.id) { 
+                channel.channelMessages.push(data); 
                 saveMessage();
-                //earlier: socket.to(channel).emit('new_message', data); //not working
             }
         })
        
