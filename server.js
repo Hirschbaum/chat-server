@@ -5,7 +5,6 @@ const app = express();
 const uuid = require('uuid');
 
 let DB_PATH = require('./chattext.json');
-//const chatArray = JSON.parse(fs.readFileSync(DB_PATH)); //previous: sentMsgs
 
 app.use(express.json());
 
@@ -44,7 +43,6 @@ app.get('/', (req, res) => {
         res.send({data});
     })
 })
-
 
 app.get('/:id', (req, res) => {
     //find the channel according to channels id in the json file...
@@ -105,8 +103,7 @@ io.on('connection', (socket) => {
     socket.on('new_message', (data) => { //-----TO FIX-----missing: id of the channel from the received data!!!!
         console.log('Got a new message', data);
 
-        data.id = uuid.v4(); //adding id to the data objekt (via new_message socket)  
-
+        data.msg_id = uuid.v4(); //adding id to the data objekt (via new_message socket)  
 
         DB_PATH.map(channel => {
             if(channel.id === data.id) { //---not working  data.id in the headers
@@ -115,12 +112,7 @@ io.on('connection', (socket) => {
                 //earlier: socket.to(channel).emit('new_message', data); //not working
             }
         })
-        
-
-        //chatArray.push(data);
-        //saveMessage();
-        //mapp through the json file for channels, if channel.channelName === data.channel?, then what?! push and save the messages there
-
+       
         io.sockets.emit('new_message', data);
     });
 
