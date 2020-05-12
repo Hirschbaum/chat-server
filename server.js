@@ -11,9 +11,9 @@ app.use(express.json());
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, { origins: '*:*' });
 
-function saveMessage() {
+function saveMessage(str) { //new argument (str)
     return new Promise((resolve, reject) => {
-        fs.writeFile('./chattext.json', JSON.stringify(DB_PATH), error => {
+        fs.writeFile('./chattext.json', JSON.stringify(str), error => { //new: stringify(str)
             if (error) {
                 reject(error);
             } else {
@@ -84,8 +84,8 @@ app.post('/', (req, res) => {
 });
 
 app.delete('/:id', (req, res) => {
-    //find all the data, except the specific channel id in the array
-    //save these data, but not the one with the specific id
+    let channelsToSave = DB_PATH.filter(channel => channel.id !== parseInt(req.params.id));
+    saveMessage(channelsToSave);
 })
 
 //-----------------SOCKET----------------------
@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
         DB_PATH.map(channel => {
             if(channel.id === data.id) { 
                 channel.channelMessages.push(data); 
-                saveMessage();
+                saveMessage(DB_PATH); //new: (DB_PATH)
             }
         })
        
