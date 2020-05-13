@@ -39,13 +39,13 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
     fs.readFile('chattext.json', (err, data) => {
-        if (err) {res.status(400).end()};
-        res.send({data});
+        if (err) { res.status(400).end() };
+        res.send({ data });
     })
 })
 
 app.get('/:id', (req, res) => { //find the channel according to channels id in the json file...
-    let choosenChannel = DB_PATH.find((channel) => channel.id === (req.params.id)) 
+    let choosenChannel = DB_PATH.find((channel) => channel.id === (req.params.id))
     if (!choosenChannel) {
         res.status(400).end();
         return;
@@ -62,31 +62,33 @@ app.post('/', (req, res) => {
     if (!name) {
         res.status(400).end();
     } else {
-        
+
         let newChannel = {
             "channelName": name,
             "id": uuid.v4(),
             "channelMessages": [],
         }
 
-        console.log(newChannel.channelName, newChannel.id); 
+        console.log(newChannel.channelName, newChannel.id);
 
         DB_PATH.push(newChannel);
         fs.writeFile('./chattext.json', JSON.stringify(DB_PATH), (error, data) => {
             if (error) {
                 res.status(500).end();
             }
-            console.log('DATA with newChannel', newChannel); 
-            res.status(201); 
+            console.log('DATA with newChannel', newChannel);
+            res.status(201);
             res.send(data = { newChannel });
-        })        
+        })
     }
 });
 
 app.delete('/:id', (req, res) => {
-    let data = DB_PATH.filter(channel => channel.id !== parseInt(req.params.id));
-    fs.writeFile('./chattext.json', JSON.stringify(data), (error, data) => {
-        if (error) {res.status(500).end()};
+    let data = DB_PATH.filter(channel => { return channel.id !== parseInt(req.params.id) });
+    //DB_PATH.length = 0;                  //clears contents, not working either
+    //DB_PATH.push.apply(DB_PATH, data);  //appends new contents, not working either
+    fs.writeFile('./chattext.json', JSON.stringify(data), (error, data) => { //it doesn't work
+        if (error) { res.status(500).end() };
         res.status(204).end();
     })
 })
@@ -96,20 +98,20 @@ app.delete('/:id', (req, res) => {
 io.on('connection', (socket) => {
     console.log('an user is connected');
 
-    socket.emit('messages', DB_PATH); 
+    socket.emit('messages', DB_PATH);
 
-    socket.on('new_message', (data) => { 
+    socket.on('new_message', (data) => {
         console.log('Got a new message', data);
 
-        data.msg_id = uuid.v4(); 
+        data.msg_id = uuid.v4();
 
         DB_PATH.map(channel => {
-            if(channel.id === data.id) { 
-                channel.channelMessages.push(data); 
+            if (channel.id === data.id) {
+                channel.channelMessages.push(data);
                 saveMessage(DB_PATH); //new: (DB_PATH)
             }
         })
-       
+
         io.sockets.emit('new_message', data);
     });
 
@@ -179,7 +181,7 @@ app.get('/:id', (req, res) => { //find the channel according to channels id in t
 })
 
 //to to create a new channel and save it in the json file
-// curl -XPOST localhost:8090/ -H 'Content-Type: application/json' -d '{"name": "abcde"}' -v         
+// curl -XPOST localhost:8090/ -H 'Content-Type: application/json' -d '{"name": "abcde"}' -v
 
 app.post('/', (req, res) => {
     let name = req.body.channelName;
