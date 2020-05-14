@@ -5,16 +5,15 @@ const app = express();
 const uuid = require('uuid');
 
 let DB_PATH = require('./chattext.json');
-//let channelsToSave = require('./chattext.json');
 
 app.use(express.json());
 
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, { origins: '*:*' });
 
-function saveMessage(str) { //new argument (str)
+function saveMessage() { 
     return new Promise((resolve, reject) => {
-        fs.writeFile('./chattext.json', JSON.stringify(str), error => { //new: stringify(str)
+        fs.writeFile('./chattext.json', JSON.stringify(DB_PATH), error => { 
             if (error) {
                 reject(error);
             } else {
@@ -85,11 +84,11 @@ app.post('/', (req, res) => {
 });
 
 app.delete('/:id', (req, res) => {
-    let channelsToSave = DB_PATH.filter(channel => { return channel.id !== parseInt(req.params.id) });
+    let channelsToSave = DB_PATH.filter(channel => { return channel.id !== req.params.id });
    
-   fs.writeFile('./chattext.json', JSON.stringify(channelsToSave), (error, data) => { //---------------it doesn't work
+   fs.writeFile('./chattext.json', JSON.stringify(channelsToSave), (error, data) => { 
         if (error) { res.status(500).end() };
-        res.status(204).end(); //----------------------------------i got this as response
+        res.status(204).end(); 
     })
     
 })
@@ -109,7 +108,7 @@ io.on('connection', (socket) => {
         DB_PATH.map(channel => {
             if (channel.id === data.id) {
                 channel.channelMessages.push(data);
-                saveMessage(DB_PATH); 
+                saveMessage(); 
             }
         })
 
