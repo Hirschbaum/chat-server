@@ -84,9 +84,9 @@ app.post('/', (req, res) => {
 });
 
 app.delete('/:id', (req, res) => {
-    let channelsToSave = DB_PATH.filter(channel => { return channel.id !== (req.params.id) });
+    DB_PATH = DB_PATH.filter(channel => { return channel.id !== (req.params.id) });
    
-   fs.writeFile('./chattext.json', JSON.stringify(channelsToSave), (error, data) => { 
+   fs.writeFile('./chattext.json', JSON.stringify(DB_PATH), (error, data) => { 
         if (error) { res.status(500).end() };
         res.status(204).end(); 
     })
