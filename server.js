@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 //----- channels ----((chatrooms))----------------------------------------------
 //-------------------------------------------------------------------------------
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => { //dont use it
     fs.readFile('chattext.json', (err, data) => {
         if (err) { res.status(400).end() };
         res.send({ data });
@@ -84,7 +84,7 @@ app.post('/', (req, res) => {
 });
 
 app.delete('/:id', (req, res) => {
-    let channelsToSave = DB_PATH.filter(channel => { return channel.id !== req.params.id });
+    let channelsToSave = DB_PATH.filter(channel => { return channel.id !== (req.params.id) });
    
    fs.writeFile('./chattext.json', JSON.stringify(channelsToSave), (error, data) => { 
         if (error) { res.status(500).end() };
